@@ -1,0 +1,41 @@
+version: 2
+
+models:
+  - name: customers
+    description: "This is the customers table"
+    columns:
+      - name: customer_id
+        description: "This is the customer id, and primary key"
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_customers
+    description: "This is the staging customers table"
+    columns:
+      - name: customer_id
+        description: "This is the customer id, and primary key"
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_orders
+    description: "This is the staging orders table"
+    columns:
+      - name: order_id
+        description: "This is the order id, and primary key"
+        tests:
+          - unique
+          - not_null
+      - name: status
+        description: "This is the status of the order"
+        tests:
+          - accepted_values:
+              values: ['placed', 'shipped', 'completed', 'return_pending', 'returned']
+      - name: customer_id
+        description: "This is the customer id, and foreign key"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
